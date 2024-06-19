@@ -3,7 +3,7 @@
 
 import { sql } from "drizzle-orm";
 import {
-  index,
+  integer,
   pgTableCreator,
   serial,
   timestamp,
@@ -18,17 +18,22 @@ import {
  */
 export const createTable = pgTableCreator((name) => `next-finance_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+export const accounts = createTable("account", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  balance_cents: integer("balance_cents").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }),
+});
+
+export const transactions = createTable("transaction", {
+  id: serial("id").primaryKey(),
+  accountId: integer("account_id").notNull(),
+  amount_cents: integer("amount_cents").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }),
+});
