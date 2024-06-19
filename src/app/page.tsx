@@ -9,6 +9,8 @@ const mockUrls = [
   "https://utfs.io/f/3b9027e0-f6f8-411f-912b-f6d2f176fbf2-t9wec8.jpg",
 ];
 
+export const dynamic = "force-dynamic";
+
 const mockImages = mockUrls.map((url, index) => ({
   id: index + 1,
   url,
