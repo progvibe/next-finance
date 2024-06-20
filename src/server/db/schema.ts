@@ -20,6 +20,7 @@ export const createTable = pgTableCreator((name) => `next-finance_${name}`);
 
 export const accounts = createTable("account", {
   id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }).notNull(),
   balance_cents: integer("balance_cents").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
@@ -30,10 +31,18 @@ export const accounts = createTable("account", {
 
 export const transactions = createTable("transaction", {
   id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 256 }).notNull(),
   accountId: integer("account_id").notNull(),
   amount_cents: integer("amount_cents").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
+});
+
+export const images = createTable("image", {
+  name: varchar("name", { length: 256 }).notNull(),
+  url: varchar("url", { length: 256 }).notNull(),
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 256 }).notNull(),
 });
